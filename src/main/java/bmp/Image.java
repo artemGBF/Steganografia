@@ -43,7 +43,7 @@ public class Image {
 		pixels = new byte[width * height];
 	}
 	
-	public int getRgb888Pixel(int x, int y) {
+	public int getPixel(int x, int y) {
 		if (x < 0 || x >= width || y < 0 || y >= height)
 			throw new IndexOutOfBoundsException();
 		//System.out.println(x+" "+y);
@@ -53,7 +53,7 @@ public class Image {
 		return palette[pixels[y * width + x] & 0xFF];
 	}
 	
-	public void setRgb888Pixel(int x, int y, byte colorIndex) {
+	public void setPixel(int x, int y, byte colorIndex) {
 		if (x < 0 || x >= width || y < 0 || y >= height || (colorIndex & 0xFF) >= palette.length)
 			throw new IndexOutOfBoundsException();
 		if(x<bytes.length&&y==1){

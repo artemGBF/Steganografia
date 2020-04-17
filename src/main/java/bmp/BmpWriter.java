@@ -65,7 +65,7 @@ public class BmpWriter {
 		byte[] row = new byte[rowSize];
 		for (int y = height - 1; y >= 0; y--) {
 			for (int x = 0; x < width; x++) {
-				int color = image.getRgb888Pixel(x, y);
+				int color = image.getPixel(x, y);
 				row[x * 3 + 0] = (byte)(color >>>  0);  // Blue
 				row[x * 3 + 1] = (byte)(color >>>  8);  // Green
 				row[x * 3 + 2] = (byte)(color >>> 16);  // Red

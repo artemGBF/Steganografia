@@ -123,7 +123,7 @@ public class BmpReader {
             }
 
             //if (compression == 0)
-            bmp.image = readPalettedImage(in1, width, height, topToBottom, bitsPerPixel, palette);
+            bmp.image = readImage(in1, width, height, topToBottom, bitsPerPixel, palette);
             //bmp.image.saveData("Hello");
            /* else
                 bmp.image = readRleImage(in1, width, height, bitsPerPixel, palette);*/
@@ -156,15 +156,15 @@ public class BmpReader {
                 int color = (row[x * bytesPerPixel + 2] & 0xFF) << 16
                         | (row[x * bytesPerPixel + 1] & 0xFF) << 8
                         | (row[x * bytesPerPixel + 0] & 0xFF) << 0;
-                image.setRgb888Pixel(x, y, color);
+                image.setPixel(x, y, color);
             }
         }
         return image;
     }*/
 
 
-    private static Image readPalettedImage(MyInput in, int width, int height, boolean topToBottom,
-                                           int bitsPerPixel, int[] palette) throws IOException {
+    private static Image readImage(MyInput in, int width, int height, boolean topToBottom,
+                                   int bitsPerPixel, int[] palette) throws IOException {
         Image image = new Image(width, height, palette);
         byte[] row = new byte[(width * bitsPerPixel + 31) / 32 * 4];
         int pixelsPerByte = 8 / bitsPerPixel;
@@ -184,7 +184,7 @@ public class BmpReader {
             for (int x = 0; x < width; x++) {
                 int index = x / pixelsPerByte;
                 int shift = (pixelsPerByte - 1 - x % pixelsPerByte) * bitsPerPixel;
-                image.setRgb888Pixel(x, y, (byte) (row[index] >>> shift & mask));
+                image.setPixel(x, y, (byte) (row[index] >>> shift & mask));
             }
         }
         return image;
@@ -219,9 +219,9 @@ public class BmpReader {
                             break;
 
                         if (bitsPerPixel == 8)
-                            image.setRgb888Pixel(x, y, b[i]);
+                            image.setPixel(x, y, b[i]);
                         else if (bitsPerPixel == 4)
-                            image.setRgb888Pixel(x, y, (byte) (b[i / 2] >>> ((1 - i % 2) * 4) & 0xF));
+                            image.setPixel(x, y, (byte) (b[i / 2] >>> ((1 - i % 2) * 4) & 0xF));
                         else
                             throw new AssertionError();
                     }
@@ -232,9 +232,9 @@ public class BmpReader {
                     if (x == width)  // Ignore image data past end of line
                         break;
                     if (bitsPerPixel == 8)
-                        image.setRgb888Pixel(x, y, b[1]);
+                        image.setPixel(x, y, b[1]);
                     else if (bitsPerPixel == 4)
-                        image.setRgb888Pixel(x, y, (byte) (b[1] >>> ((1 - i % 2) * 4) & 0xF));
+                        image.setPixel(x, y, (byte) (b[1] >>> ((1 - i % 2) * 4) & 0xF));
                     else
                         throw new AssertionError();
                 }
